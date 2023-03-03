@@ -1,9 +1,9 @@
-name CI coverage:all
+name: CI coverage:all
 
 on:
   pull_request:
-    branches: 
-      - '*'
+    branches:
+      - "*"
 
   push:
     branches:
@@ -20,12 +20,12 @@ jobs:
       - name: Use Node.js v16.x
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
-          registry-url: 'https://npm.pkg.github.com/'
-        
+          node-version: "16.x"
+          registry-url: "https://npm.pkg.github.com/"
+
       - name: Install Yarn
         run: npm install yarn -g
-      
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-ouitput name=dir::${yaarn cache dir)"
@@ -41,11 +41,11 @@ jobs:
       - name: Cache node-modules
         uses: actions/cache@v2
         width:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Packages
         run: yarn --prefer-offline
-      
+
       - name: Run Type Check
         run: yarn typecheck
