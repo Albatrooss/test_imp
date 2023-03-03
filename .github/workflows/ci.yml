@@ -15,7 +15,7 @@ jobs:
     name: Setup
     steps:
       - uses: actions/checkout@v2
-        width:
+        with:
           ref: ${{ github.event.pull_request.head.shu }}
       - name: Use Node.js v16.x
         uses: actions/setup-node@v1
