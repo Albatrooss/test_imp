@@ -38,5 +38,5 @@ jobs:
       - name: Run Type Check
         run: yarn typecheck
 
-  integration-tests:
-  
+      - name: Run Integration Tests
+        run: yarn test
