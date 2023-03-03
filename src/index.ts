@@ -8,6 +8,7 @@ app.get("/", (_req, res) => {
   res.send("Server running");
 });
 
+
 app.use("/api", router);
 
 const PORT = process.env.PORT || 3000;
