@@ -1,51 +1,42 @@
-# name: CI coverage:all
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-# on:
-#   pull_request:
-#     branches:
-#       - "*"
+name: Node.js CI
 
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
-# jobs:
-#   setup:
-#     runs-on: ubuntu-latest
-#     name: Setup
-#     steps:
-#       - uses: actions/checkout@v2
-#         with:
-#           ref: ${{ github.event.pull_request.head.shu }}
-#       - name: Use Node.js v16.x
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: "16.x"
-#           registry-url: "https://npm.pkg.github.com/"
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    name: Setup
 
-#       - name: Install Yarn
-#         run: npm install yarn -g
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
 
-#       - name: Get yarn cache directory path
-#         id: yarn-cache-dir-path
-#         run: echo "::set-output name=dir::${yarn cache dir)"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.shu }}
 
-#       - uses: actions/cache@v2
-#         id: yarn-cache
-#         with:
-#           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-#           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#           restore-keys: |
-#             ${{ runner.os }}-yarn-
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
-#       - name: Cache node-modules
-#         uses: actions/cache@v2
-#         with:
-#           path: "**/node_modules"
-#           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Yarn
+        run: npm isntall yarn -g
 
-#       - name: Install Packages
-#         run: yarn --prefer-offline
+      - name: Install Packages
+        run: yarn --prefer-offline
 
-#       - name: Run Type Check
-#         run: yarn typecheck
+      - name: Run Type Check
+        run: yarn typecheck
+
+  integration-tests:
+  
