@@ -40,7 +40,7 @@ jobs:
 
       - name: Cache node-modules
         uses: actions/cache@v2
-        width:
+        with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
