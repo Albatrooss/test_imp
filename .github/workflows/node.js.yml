@@ -32,7 +32,12 @@ jobs:
       - name: Install Yarn
         run: npm isntall yarn -g
 
-      - uses: actions/cache@v2
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::${yarn cache dir)"
+
+      - name: Use Cache
+        uses: actions/cache@v2
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
